@@ -2,7 +2,7 @@ var levelPlan = [
     "               ",
     "               ",
     "               ",     // T - tank
-    "        xxx    ",     // x - wall
+    "               ",     // x - wall
     "               ",     // F - finish
     "               ",
     "               ",
