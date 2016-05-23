@@ -2,7 +2,7 @@ var levelPlan = [
     "               ",
     "               ",
     "               ",     // T - tank
-    "               ",     // x - wall
+    "        xxx    ",     // x - wall
     "               ",     // F - finish
     "               ",
     "               ",
@@ -14,8 +14,8 @@ var levelPlan = [
 
 var tankPosition = {};
 var wayStatus = true;
-var statusShot = "none";   // "none" - не выпущена, true - выпущена летит, 
-                           // false - выпущена и попала в цель 
+var statusShot = "none";   // "none" - не выпущена, true - выпущена летит,
+                           // false - выпущена и попала в цель
 
 
 
@@ -36,7 +36,7 @@ function Level(plan) {
                     tankPosition.posX = posObject.planObjPosX;
                     tankPosition.posY = posObject.planObjPosY;
                 }
-                var tank = new Tank(tankPosition); 
+                var tank = new Tank(tankPosition);
             }
             if (plan[i][j] === "x") {
                 var posObject = new Position(j, i);
@@ -46,20 +46,20 @@ function Level(plan) {
                 var posObject = new Position(j, i);
                 var wall = new Finish(posObject.planObjPosX, posObject.planObjPosY);
             }
-                
+
         }
     }
 }
 
 function Position(planObjPosX, planObjPosY) {
     this.planObjPosX = planObjPosX*40;
-    this.planObjPosY = planObjPosY*40;  
+    this.planObjPosY = planObjPosY*40;
 }
 
 function ReversePosition(tankPos) {
     this.planObjPosX = parseInt((tankPos.posX+50)/40);
-    this.planObjPosY = parseInt((tankPos.posY+35)/40);  
-}  
+    this.planObjPosY = parseInt((tankPos.posY+35)/40);
+}
 
                                                     // --------------  WALL --------------------//
 
@@ -98,7 +98,7 @@ function Tank(tankPos) {
     container.appendChild(tankContainer);
     tankContainer.className = "tankContainer";
     tankContainer.style.left = this.posX + "px";
-    tankContainer.style.top = this.posY + "px";             
+    tankContainer.style.top = this.posY + "px";
 
     for (var i = 0; i < 7; i++) {
         var brick = document.createElement("div");
@@ -149,10 +149,10 @@ Tank.prototype.runBackward = function() {
 Tank.prototype.checkWay = function(plan) {
     var nextStep = new ReversePosition(tankPosition);
     if (plan[nextStep.planObjPosY][nextStep.planObjPosX] === "x") {
-        wayStatus = false; 
+        wayStatus = false;
     }
     if (plan[nextStep.planObjPosY][nextStep.planObjPosX] === "F") {
-        wayStatus = "finished"; 
+        wayStatus = "finished";
         Game.prototype.finished();
     }
 }
@@ -182,11 +182,11 @@ function Bullet() {
                 clearInterval(interval1);
                 statusShot = "none";
             }
-        }  
+        }
         //console.log(shotPosition.posX);
     }, 100);
 
-    
+
     var timeout = setTimeout(function() {
         if (statusShot === true) {
             clearInterval(interval1);
@@ -224,11 +224,11 @@ Bullet.prototype.hitTheWall = function(plan, shotPos) {
     var checkBulletPos = new ReversePosition(shotPos);
         if (levelPlan[checkBulletPos.planObjPosY][checkBulletPos.planObjPosX] === "x") {
             var num = checkBulletPos.planObjPosX + 1;
-            levelPlan[checkBulletPos.planObjPosY] = levelPlan[checkBulletPos.planObjPosY].slice(0, 
+            levelPlan[checkBulletPos.planObjPosY] = levelPlan[checkBulletPos.planObjPosY].slice(0,
                 num-1) + " " + levelPlan[checkBulletPos.planObjPosY].slice(num);
             container.removeChild(bigFuckingShot);
             statusShot = false;
-            
+
             var wallContainer = document.getElementsByClassName("wallContainer");
             for (var i = 0; i < wallContainer.length; i++) {
                 container.removeChild(wallContainer[i]);
@@ -236,7 +236,7 @@ Bullet.prototype.hitTheWall = function(plan, shotPos) {
 
             var tankContainer = document.getElementsByClassName("tankContainer")[0];
             container.removeChild(tankContainer);
-                
+
             var level = new Level(levelPlan);
         }
     }
@@ -255,7 +255,7 @@ function Game() {
             Tank.prototype.runForward();
             var tankContainer = document.getElementsByClassName("tankContainer")[0];
             container.removeChild(tankContainer);
-            var tank = new Tank(tankPosition); 
+            var tank = new Tank(tankPosition);
     });
 
     addEventListener("keydown", function(event) {
@@ -263,7 +263,7 @@ function Game() {
             Tank.prototype.runBackward();
             var tankContainer = document.getElementsByClassName("tankContainer")[0];
             container.removeChild(tankContainer);
-            var tank = new Tank(tankPosition); 
+            var tank = new Tank(tankPosition);
     });
 
     addEventListener("keydown", function(event) {
@@ -273,7 +273,7 @@ function Game() {
                 var bullet = new Bullet();
             }
     });
-    
+
 }
 
 /*Game.prototype.showedControlInformation = function() {
@@ -295,5 +295,3 @@ Game.prototype.finished = function() {
 }
 
 var game = new Game();
-
-
